@@ -21,6 +21,8 @@
 - [#3304](https://github.com/influxdb/influxdb/pull/3304): Fixed httpd logger to log user from query params. Thanks @jhorwit2
 - [#3332](https://github.com/influxdb/influxdb/pull/3332): Add SLIMIT and SOFFSET to string version of AST.
 - [#3335](https://github.com/influxdb/influxdb/pull/3335): Don't drop all data on DROP DATABASE. Thanks to @PierreF for the report
+- [#3244](https://github.com/influxdb/influxdb/pull/3244): Wire up admin privilege grant and revoke.
+- [#3259](https://github.com/influxdb/influxdb/issues/3259): Respect privileges for queries.
 
 ## v0.9.1 [2015-07-02]
 
