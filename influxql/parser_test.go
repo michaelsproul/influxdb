@@ -942,9 +942,9 @@ func TestParser_ParseStatement(t *testing.T) {
 		{
 			s: `CREATE USER testuser WITH PASSWORD 'pwd1337' WITH ALL PRIVILEGES`,
 			stmt: &influxql.CreateUserStatement{
-				Name:      "testuser",
-				Password:  "pwd1337",
-				Privilege: influxql.NewPrivilege(influxql.AllPrivileges),
+				Name:     "testuser",
+				Password: "pwd1337",
+				Admin:    true,
 			},
 		},
 

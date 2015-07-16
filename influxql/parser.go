@@ -1323,12 +1323,12 @@ func (p *Parser) parseCreateUserStatement() (*CreateUserStatement, error) {
 		return stmt, nil
 	}
 
-	// We only allow granting of "ALL PRIVILEGES" during CREATE USER.
-	// All other privileges must be granted using a GRANT statement.
+	// "WITH ALL PRIVILEGES" grants the new user admin privilege.
+	// Only admin privilege can be set on user creation.
 	if err := p.parseTokens([]Token{ALL, PRIVILEGES}); err != nil {
 		return nil, err
 	}
-	stmt.Privilege = NewPrivilege(AllPrivileges)
+	stmt.Admin = true
 
 	return stmt, nil
 }

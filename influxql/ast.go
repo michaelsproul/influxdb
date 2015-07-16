@@ -357,11 +357,11 @@ type CreateUserStatement struct {
 	// Name of the user to be created.
 	Name string
 
-	// User's password
+	// User's password.
 	Password string
 
-	// User's privilege level.
-	Privilege *Privilege
+	// User's admin privilege.
+	Admin bool
 }
 
 // String returns a string representation of the create user statement.
@@ -371,12 +371,9 @@ func (s *CreateUserStatement) String() string {
 	_, _ = buf.WriteString(s.Name)
 	_, _ = buf.WriteString(" WITH PASSWORD ")
 	_, _ = buf.WriteString(s.Password)
-
-	if s.Privilege != nil {
-		_, _ = buf.WriteString(" WITH ")
-		_, _ = buf.WriteString(s.Privilege.String())
+	if s.Admin {
+		_, _ = buf.WriteString(" WITH ALL PRIVILEGES")
 	}
-
 	return buf.String()
 }
 

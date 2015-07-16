@@ -135,12 +135,7 @@ func (e *StatementExecutor) executeShowServersStatement(q *influxql.ShowServersS
 }
 
 func (e *StatementExecutor) executeCreateUserStatement(q *influxql.CreateUserStatement) *influxql.Result {
-	admin := false
-	if q.Privilege != nil {
-		admin = (*q.Privilege == influxql.AllPrivileges)
-	}
-
-	_, err := e.Store.CreateUser(q.Name, q.Password, admin)
+	_, err := e.Store.CreateUser(q.Name, q.Password, q.Admin)
 	return &influxql.Result{Err: err}
 }
 
