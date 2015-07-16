@@ -978,8 +978,11 @@ type UserInfo struct {
 
 // Authorize returns true if the user is authorized and false if not.
 func (ui *UserInfo) Authorize(privilege influxql.Privilege, database string) bool {
+	if ui.Admin {
+		return true
+	}
 	p, ok := ui.Privileges[database]
-	return (ok && p >= privilege) || (ui.Admin)
+	return ok && (p == privilege || p == influxql.AllPrivileges)
 }
 
 // clone returns a deep copy of si.
