@@ -60,6 +60,7 @@ type Handler struct {
 	}
 
 	QueryExecutor interface {
+		Authorize(u *meta.UserInfo, q *influxql.Query, db string) error
 		ExecuteQuery(q *influxql.Query, db string, chunkSize int) (<-chan *influxql.Result, error)
 	}
 
@@ -210,6 +211,15 @@ func (h *Handler) serveQuery(w http.ResponseWriter, r *http.Request, user *meta.
 	if err != nil {
 		httpError(w, "error parsing query: "+err.Error(), pretty, http.StatusBadRequest)
 		return
+	}
+
+	// Check authorization.
+	if h.requireAuthentication {
+		err = h.QueryExecutor.Authorize(user, query, db)
+		if err != nil {
+			httpError(w, "error authorizing query: "+err.Error(), pretty, http.StatusUnauthorized)
+			return
+		}
 	}
 
 	// Parse chunk size. Use default if not provided or unparsable.
