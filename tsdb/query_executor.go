@@ -87,9 +87,16 @@ func (q *QueryExecutor) Authorize(u *meta.UserInfo, query *influxql.Query, datab
 		// Get the privileges required to execute the statement.
 		privs := stmt.RequiredPrivileges()
 
-		// Make sure the user has each privilege required to execute
-		// the statement.
+		// Make sure the user has the privileges required to execute
+		// each statement.
 		for _, p := range privs {
+			if p.Admin {
+				// Admin privilege already checked so statement requiring admin
+				// privilege cannot be run.
+				msg := fmt.Sprintf("statement '%s', requires admin privilege", stmt)
+				return NewErrAuthorize(q, query, u.Name, database, msg)
+			}
+
 			// Use the db name specified by the statement or the db
 			// name passed by the caller if one wasn't specified by
 			// the statement.
