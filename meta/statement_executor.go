@@ -29,7 +29,7 @@ type StatementExecutor struct {
 		SetPrivilege(username, database string, p influxql.Privilege) error
 		SetAdminPrivilege(username string, admin bool) error
 		UserPrivileges(username string) (map[string]influxql.Privilege, error)
-		UserPrivilege(username, database string) (influxql.Privilege, error)
+		UserPrivilege(username, database string) (*influxql.Privilege, error)
 
 		CreateContinuousQuery(database, name, query string) error
 		DropContinuousQuery(database, name string) error
@@ -183,7 +183,7 @@ func (e *StatementExecutor) executeRevokeStatement(stmt *influxql.RevokeStatemen
 			return &influxql.Result{Err: err}
 		}
 		// Bit clear (AND NOT) the user's privilege with the revoked privilege.
-		priv = p &^ stmt.Privilege
+		priv = *p &^ stmt.Privilege
 	}
 
 	return &influxql.Result{Err: e.Store.SetPrivilege(stmt.User, stmt.On, priv)}

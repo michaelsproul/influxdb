@@ -501,19 +501,19 @@ func (data *Data) UserPrivileges(name string) (map[string]influxql.Privilege, er
 }
 
 // UserPrivilege gets the privilege for a user on a database.
-func (data *Data) UserPrivilege(name, database string) (influxql.Privilege, error) {
+func (data *Data) UserPrivilege(name, database string) (*influxql.Privilege, error) {
 	ui := data.User(name)
 	if ui == nil {
-		return influxql.NoPrivileges, ErrUserNotFound
+		return nil, ErrUserNotFound
 	}
 
 	for db, p := range ui.Privileges {
 		if db == database {
-			return p, nil
+			return &p, nil
 		}
 	}
 
-	return influxql.NoPrivileges, nil
+	return influxql.NewPrivilege(influxql.NoPrivileges), nil
 }
 
 // Clone returns a copy of data with a new version.

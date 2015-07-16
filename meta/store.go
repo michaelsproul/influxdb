@@ -1153,7 +1153,7 @@ func (s *Store) UserPrivileges(username string) (p map[string]influxql.Privilege
 }
 
 // UserPrivilege returns the privilege for a database.
-func (s *Store) UserPrivilege(username, database string) (p influxql.Privilege, err error) {
+func (s *Store) UserPrivilege(username, database string) (p *influxql.Privilege, err error) {
 	err = s.read(func(data *Data) error {
 		p, err = data.UserPrivilege(username, database)
 		return err
