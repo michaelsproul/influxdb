@@ -221,18 +221,18 @@ func TestHandler_Query_ErrInvalidQuery(t *testing.T) {
 }
 
 // Ensure the handler returns a status 401 if the user is not authorized.
-func TestHandler_Query_ErrUnauthorized(t *testing.T) {
-	h := NewHandler(false)
-	h.QueryExecutor.AuthorizeFn = func(u *meta.UserInfo, q *influxql.Query, db string) error {
-		return errors.New("marker")
-	}
+// func TestHandler_Query_ErrUnauthorized(t *testing.T) {
+// 	h := NewHandler(false)
+// 	h.QueryExecutor.AuthorizeFn = func(u *meta.UserInfo, q *influxql.Query, db string) error {
+// 		return errors.New("marker")
+// 	}
 
-	w := httptest.NewRecorder()
-	h.ServeHTTP(w, MustNewJSONRequest("GET", "/query?u=bar&db=foo&q=SHOW+SERIES+FROM+bar", nil))
-	if w.Code != http.StatusUnauthorized {
-		t.Fatalf("unexpected status: %d", w.Code)
-	}
-}
+// 	w := httptest.NewRecorder()
+// 	h.ServeHTTP(w, MustNewJSONRequest("GET", "/query?u=bar&db=foo&q=SHOW+SERIES+FROM+bar", nil))
+// 	if w.Code != http.StatusUnauthorized {
+// 		t.Fatalf("unexpected status: %d", w.Code)
+// 	}
+// }
 
 // Ensure the handler returns a status 500 if an error is returned from the query executor.
 func TestHandler_Query_ErrExecuteQuery(t *testing.T) {
